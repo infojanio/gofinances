@@ -1,35 +1,49 @@
 import React from 'react';
+import { HighLigthCard } from '../../components/HighLigthCard';
 
 import { 
   Container, 
   Header,
+  UserWrapper,
   UserInfo,
   Photo,
   User,
   UserGreeting,
-  UserName,  
+  UserName,
+  Icon, 
+  HighLigthCards 
 } from './styles';
 
 
 export function Dashboard() {
   return (
     
-    <Container>
-      
+    <Container> 
+
       <Header>
+     <UserWrapper>  
      <UserInfo>
-
       <Photo source={{uri: 'https://avatars.githubusercontent.com/u/59238443?v=4'}}/>
-
       <User>
         <UserGreeting>Olá, </UserGreeting>
         <UserName> Jânio </UserName>
-
       </User>
+     </UserInfo>  
 
-     </UserInfo>
-      </Header>
-    
+      <Icon name='power' />
+     </UserWrapper> 
+      </Header> 
+
+      <HighLigthCards 
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      >
+
+      <HighLigthCard />
+      <HighLigthCard />
+      <HighLigthCard />
+
+      </HighLigthCards>
     </Container>
     
   )
