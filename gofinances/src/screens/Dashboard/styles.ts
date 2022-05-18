@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 import {Feather} from '@expo/vector-icons';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
-import theme from '../../global/styles/theme';
 
 export const Container = styled.View`
 flex: 1;
@@ -13,19 +13,24 @@ background-color: #f0f2f5;
 export const Header = styled.View`
 width: 100%;
 height: ${RFPercentage(42)}px;
+
 background-color: #5636d3;
-align-items: center;
-justify-content: center;
+
+justify-content: center; 
+align-items: flex-start;
+flex-direction: row;
 `;
 //background-color: ${({theme}) => theme.colors.primary};
 
 export const UserWrapper = styled.View `
 width: 100%;
 padding: 0px 24px;
+
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
 `;
+//margin-top: ${getStatusBarHeight()+ RFValue(28)}px; //corrigir margem em iphone
 //0 cima-embaixo - 24 direita-esquerda
 //padding-left: 24px;
 //padding-right: 0px;
@@ -63,12 +68,32 @@ font-family: Poppins_400Regular;
 //color: ${({theme})=> theme.colors.shape};
 
 export const Icon = styled(Feather)`
+
 color: #ff872c;
 font-size: ${RFValue(24)}px;
 `;
 //color: ${({theme})=> theme.colors.fonts.secundary};
 
 
-export const HighLigthCards = styled.ScrollView`
+export const HighLigthCards = styled.ScrollView.attrs({ 
+    horizontal: true,
+    showsHorizontalScrollIndicator: false,
+    contentContainerStyle:{paddingHorizontal:24}
+    })` 
+    width: 100%;
+    position: absolute;
+    margin-top: ${RFPercentage(20)}px;
+    `;
 
-`;
+export const Transactions = styled.View`
+flex: 1%;
+padding: 0 24px;
+margin-top: ${RFValue(12)}px;
+`; 
+
+export const Title = styled.Text`
+font-size: ${RFValue(18)}px;
+font-family: Poppins_400Regular;
+margin-bottom: 16px;
+`; 
+//font-family: ${({theme})=> theme.fonts.regular};

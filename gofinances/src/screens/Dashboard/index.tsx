@@ -1,5 +1,6 @@
 import React from 'react';
 import { HighLigthCard } from '../../components/HighLigthCard';
+import { TransactionCard } from '../../components/TransactionCard';
 
 import { 
   Container, 
@@ -11,7 +12,9 @@ import {
   UserGreeting,
   UserName,
   Icon, 
-  HighLigthCards 
+  HighLigthCards, 
+  Transactions, 
+  Title
 } from './styles';
 
 
@@ -34,16 +37,37 @@ export function Dashboard() {
      </UserWrapper> 
       </Header> 
 
-      <HighLigthCards 
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      >
+      <HighLigthCards>
 
-      <HighLigthCard />
-      <HighLigthCard />
-      <HighLigthCard />
+      <HighLigthCard 
+      type='up'
+      title="Entradas"
+      amount="R$ 17.400,00"
+      lastTransaction='Última entrada dia 13 de abril' 
+      />
+
+<HighLigthCard 
+      type='down'
+      title="Saídas"
+      amount="R$ 1.259,00"
+      lastTransaction='Última saída dia 03 de abril' 
+      />
+
+<HighLigthCard 
+      type='total'
+      title="Total"
+      amount="R$ 16.141,00"
+      lastTransaction='01 a 16 de abril' 
+      />
 
       </HighLigthCards>
+
+<Transactions>
+    <Title>Listagem</Title>
+</Transactions>
+
+<TransactionCard/>
+  
     </Container>
     
   )
