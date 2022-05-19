@@ -2,6 +2,10 @@ import styled from "styled-components/native";
 import {Feather} from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 
+interface TransactionProps {
+    type: "positive" | "negative";
+}
+
 export const Container = styled.View`
 background-color: #f0f2f5;
 border-radius: 5px;
@@ -14,11 +18,15 @@ export const Title = styled.Text`
 font-family: Poppins_400Regular;
 font-size: ${RFValue(14)}px;
 `; 
-//font-family: ${({theme})=> theme.fonts.medium};
+//font-family: ${({theme})=> theme.fonts.medium};  PAREI NO MIN. -2:33
 
-export const Amount = styled.Text`
+export const Amount = styled.Text<TransactionProps>`
 font-family: Poppins_400Regular;
 font-size: ${RFValue(14)}px;
+color: ${({theme, type})=> 
+type === 'positive' ? theme.colors.success : theme.colors.success};
+
+
 margin-top: 2px;
 `; 
 

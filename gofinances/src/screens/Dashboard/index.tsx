@@ -24,6 +24,7 @@ export function Dashboard() {
 
   const data = [
     {
+type: "positive",
 title: "Desenvolvimento de site",
 amount: "R$ 12.000,00",
 category: {
@@ -34,21 +35,23 @@ date: "19/04/2022"
   },
 
   {
-    title: "Desenvolvimento de app",
-    amount: "R$ 12.000,00",
+    type: "negative",
+    title: "Hamburguer Pizzy",
+    amount: "R$ 59,00",
     category: {
-    name: 'Vendas',
-    icon: 'dollar-sign'
+    name: 'Alimentação',
+    icon: 'coffee'
     },
     date: "19/04/2022"
       },
 
       {
-        title: "Desenvolvimento de apps",
-        amount: "R$ 12.000,00",
+        type: "negative",
+        title: "Aluguel de apartamento",
+        amount: "R$ 1.200,00",
         category: {
-        name: 'Vendas',
-        icon: 'dollar-sign'
+        name: 'Casa',
+        icon: 'shopping-bag'
         },
         date: "19/04/2022"
           }
@@ -74,7 +77,7 @@ date: "19/04/2022"
 
       <HighLigthCards>
 
-      <HighLigthCard 
+<HighLigthCard 
       type='up'
       title="Entradas"
       amount="R$ 17.400,00"
@@ -95,10 +98,11 @@ date: "19/04/2022"
       lastTransaction='01 a 16 de abril' 
       />
 
-      </HighLigthCards>
+</HighLigthCards>
 
 <Transactions>
     <Title>Listagem</Title>
+</Transactions>
 
     <TransactionList 
     data={data}
@@ -109,7 +113,7 @@ date: "19/04/2022"
     }}
     />  
 
-</Transactions>
+
 
   
     </Container>
