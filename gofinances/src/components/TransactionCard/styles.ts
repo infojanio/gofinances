@@ -7,6 +7,7 @@ background-color: #f0f2f5;
 border-radius: 5px;
 
 padding: 17px 24px;
+margin-bottom: 16px;
 `;
 
 export const Title = styled.Text`
@@ -23,9 +24,8 @@ margin-top: 2px;
 
 export const Footer = styled.View`
 flex-direction: row;
-align-content: space-between;
+justify-content: space-between;
 align-items: center;
-
 margin-top: 19px;
 `; 
 
@@ -42,9 +42,12 @@ export const CategoryName = styled.Text`
 font-size: ${RFValue(14)}px;
 color: #969cb2;
 margin-left: 17px;
+
 `; 
 
 export const Date = styled.Text`
 font-size: ${RFValue(14)}px;
 color: #969cb2;
+
+
 `;
