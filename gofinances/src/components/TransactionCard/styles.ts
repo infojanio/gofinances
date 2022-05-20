@@ -24,11 +24,11 @@ export const Amount = styled.Text<TransactionProps>`
 font-family: Poppins_400Regular;
 font-size: ${RFValue(14)}px;
 color: ${({theme, type})=> 
-type === 'positive' ? theme.colors.success : theme.colors.success};
-
+type === 'positive' ? '#12a454' : '#e83f5b'};
 
 margin-top: 2px;
 `; 
+//type === 'positive' ? theme.colors.success : theme.colors.attention};
 
 export const Footer = styled.View`
 flex-direction: row;
