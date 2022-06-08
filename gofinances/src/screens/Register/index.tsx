@@ -81,6 +81,7 @@ export function Register() {
     }
 
     console.log(data)
+    Alert.alert('Cadastro realizado!')
   }
 
   return (

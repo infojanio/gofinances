@@ -5,6 +5,7 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
 
 import { DataListProps } from '.'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+//import { BorderlessButton } from 'react-native-gesture-handler'
 
 export const Container = styled.View`
   flex: 1;
@@ -69,6 +70,8 @@ export const UserName = styled.Text`
 `
 //color: #ffffff;
 //font-family: Poppins_400Regular;
+
+export const LogoutButton = styled.TouchableOpacity``
 
 export const Icon = styled(Feather)`
   color: ${({ theme }) => theme.colors.secundary};
