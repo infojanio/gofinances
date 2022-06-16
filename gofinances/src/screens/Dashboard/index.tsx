@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import { HighLigthCard } from '../../components/HighLigthCard'
 import {
   TransactionCard,
@@ -27,43 +29,48 @@ export interface DataListProps extends TransactionCardProps {
 }
 
 export function Dashboard() {
-  const data: DataListProps[] = [
-    {
-      id: '1',
-      type: 'positive',
-      title: 'Desenvolvimento de site',
-      amount: 'R$ 12.000,00',
-      category: {
-        name: 'Vendas',
-        icon: 'dollar-sign',
-      },
-      date: '19/04/2022',
-    },
+  const [data, setData] = useState<DataListProps[]>([])
+  const dataKey = '@gofinances:transactions'
 
-    {
-      id: '2',
-      type: 'negative',
-      title: 'Hamburguer Pizzy',
-      amount: 'R$ 59,00',
-      category: {
-        name: 'Alimentação',
-        icon: 'coffee',
-      },
-      date: '19/04/2022',
-    },
+  async function loadTransactions() {
+    const response = await AsyncStorage.getItem(dataKey)
+    const transactions = response ? JSON.parse(response) : []
 
-    {
-      id: '3',
-      type: 'negative',
-      title: 'Aluguel de apartamento',
-      amount: 'R$ 1.200,00',
-      category: {
-        name: 'Casa',
-        icon: 'shopping-bag',
+    const transactionsFormatted: DataListProps[] = transactions.map(
+      (item: DataListProps) => {
+        const amount = Number(item.amount).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })
+
+        //const date = new Date(item.date)
+        const date = Intl.DateTimeFormat('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit',
+        }).format(new Date(item.date))
+
+        return {
+          id: item.id,
+          name: item.name,
+          amount,
+          type: item.type,
+          category: item.category,
+          date,
+        }
       },
-      date: '19/04/2022',
-    },
-  ]
+    )
+
+    setData(transactionsFormatted)
+  }
+
+  useEffect(() => {
+    loadTransactions()
+    // async function removeAll() {
+    //  await AsyncStorage.removeItem(dataKey)
+    //}
+    //removeAll()
+  }, [])
 
   return (
     <Container>
