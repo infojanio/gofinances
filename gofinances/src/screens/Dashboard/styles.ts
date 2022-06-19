@@ -77,7 +77,6 @@ export const Icon = styled(Feather)`
   color: ${({ theme }) => theme.colors.secundary};
   font-size: ${RFValue(24)}px;
 `
-//color: #ff872c;
 
 export const HighLigthCards = styled.ScrollView.attrs({
   horizontal: true,
@@ -96,9 +95,11 @@ export const Transactions = styled.View`
 `
 
 export const Title = styled.Text`
+  color: ${({ theme }) => theme.colors.text_dark};
+
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 `
 //font-family: Poppins_400Regular;
 

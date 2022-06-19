@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native'
 import { useTheme } from 'styled-components'
 
 import { HighLigthCard } from '../../components/HighLigthCard'
+
 import {
   TransactionCard,
   TransactionCardProps,
@@ -219,15 +221,16 @@ export function Dashboard() {
               lastTransaction={highlightData.total.lastTransaction}
             />
           </HighLigthCards>
+
           <Transactions>
             <Title>Listagem</Title>
-          </Transactions>
 
-          <TransactionList
-            data={transactions}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <TransactionCard data={item} />}
-          />
+            <TransactionList
+              data={transactions}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => <TransactionCard data={item} />}
+            />
+          </Transactions>
         </>
       )}
     </Container>

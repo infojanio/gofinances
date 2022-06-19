@@ -23,10 +23,10 @@ export const Container = styled.View<ContainerProps>`
 
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.regular};
-  font-size: ${RFValue(14)}px;
+  font-size: ${RFValue(15)}px;
 `
 
 export const Amount = styled.Text`
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: ${RFValue(14)}px;
+  font-size: ${RFValue(15)}px;
 `
