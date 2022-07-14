@@ -2,8 +2,10 @@ import React from 'react'
 import { RFValue } from 'react-native-responsive-fontsize'
 
 import AppleSvg from '../../assets/apple.svg'
-import GoogleSvg from '../../assets/gogle.svg'
+import GoogleSvg from '../../assets/google.svg'
 import LogoSvg from '../../assets/logo.svg'
+import { SignInSocialButton } from '../../components/SignInSocialButton'
+import { FooterWrapper } from '../../components/SignInSocialButton/styles'
 
 import {
   Container,
@@ -34,7 +36,13 @@ export function SignIn() {
         </SignInTitle>
       </Header>
 
-      <Footer></Footer>
+      <Footer>
+        <FooterWrapper>
+          <SignInSocialButton title="Entrar com Google" svg={GoogleSvg} />
+
+          <SignInSocialButton title="Entrar com Google" svg={AppleSvg} />
+        </FooterWrapper>
+      </Footer>
     </Container>
   )
 }
