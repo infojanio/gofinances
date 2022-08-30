@@ -18,6 +18,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { AppRoutes } from './src/routes/app.routes'
 import AppLoading from 'expo-app-loading'
 import { SignIn } from './src/screens/SignIn'
+import { Dashboard } from './src/screens/Dashboard'
+import { Register } from './src/screens/Register'
 
 export default function App() {
   //carrega as fontes
