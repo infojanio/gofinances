@@ -3,6 +3,10 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 import * as AuthSession from 'expo-auth-session'
 import { UserInfo } from '../screens/Dashboard/styles'
 
+import { LogBox } from 'react-native'
+
+LogBox.ignoreLogs(['EventEmitter.removeListener'])
+
 interface AuthProviderProps {
   children: ReactNode
 }
@@ -36,8 +40,11 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signInWithGoogle() {
     try {
       const CLIENT_ID =
-        '691427976727-43na9t5sbmutmepusktso5858s12vpbj.apps.googleusercontent.com'
-      const REDIRECT_URI = 'https://auth.expo.io/@janio/gofinances'
+        '686914996065-eg43f54mufblo4rdr0qt40s43db8ap7n.apps.googleusercontent.com'
+
+      //  '686914996065-eg43f54mufblo4rdr0qt40s43db8ap7n.apps.googleusercontent.com'
+      const REDIRECT_URI =
+        'https://auth.expo.io/@info.janio@gmail.com/gofinance'
       const RESPONSE_TYPE = 'token'
       const SCOPE = encodeURI('profile email') //usa-se o encodeURI para que o espaço não quebre a busca
 
@@ -65,7 +72,6 @@ function AuthProvider({ children }: AuthProviderProps) {
       console.log(UserInfo)
 
       AuthSession.startAsync({ authUrl }) //endpoint de autenticação da google
-      // console.log(response)
     } catch (error) {
       throw new Error(error)
     }
