@@ -4,6 +4,15 @@
     "slug": "gofinances",
     "scheme": "gofinances",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.olhonocodigo.gofinances"
+    },
+
+    "android": {
+      "package": "com.olhonocodigo.gofinances"
+    }
   }
 }

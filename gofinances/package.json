@@ -41,7 +41,9 @@
     "yarn": "^1.22.18",
     "yup": "^0.32.11",
     "expo-auth-session": "~3.6.1",
-    "expo-random": "~12.2.0"
+    "expo-random": "~12.2.0",
+    "expo-web-browser": "~10.2.1",
+    "expo-updates": "~0.13.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
