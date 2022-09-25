@@ -1,9 +1,22 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from 'react'
 
 import * as AuthSession from 'expo-auth-session'
 
-import { LogBox } from 'react-native'
+import * as Google from 'expo-google-app-auth'
+import * as AppleAuthentication from 'expo-apple-authentication'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const { CLIENT_ID } = process.env
+const { REDIRECT_URI } = process.env
+
+import { LogBox } from 'react-native'
 LogBox.ignoreLogs(['EventEmitter.removeListener'])
 
 interface AuthProviderProps {
@@ -20,6 +33,9 @@ interface User {
 interface IAuthContextData {
   user: User
   signInWithGoogle(): Promise<void>
+  signInWithApple(): Promise<void>
+  signOut(): Promise<void>
+  userStorageLoading: boolean
 }
 
 interface AuthorizationResponse {
@@ -33,19 +49,45 @@ const AuthContext = createContext({} as IAuthContextData)
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
+  const [userStorageLoading, setUserStorageloading] = useState(true)
+
+  const userStorageKey = '@gofinances:user'
   /*
+    //loga com conta da google
+  async function signInWithGoogle() {
+    try {
+
+      const result = await Google.logInAsync({
+        iosClientId: '313172291784-8p1i8cee4o3a2r5bsd0agl2450hea003.apps.googleusercontent.com', 
+        androidClientId: '313172291784-ha7ns55u1cgriq737p54emel0ddv6bfp.apps.googleusercontent.com',
+        scopes: ['profile', 'email']
+      })
+
+   
+
+      if (result.type === 'success') {
+        const userLogged = {
+        //se deu certo, salva os dados do usuário
+        
+          id: String(result.user.id),
+          email: result.user.email,
+          name: result.user.name,
+          photo: result.user.photoUrl, 
+      }
+
+      setUser(userLogged)
+      await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged))
+    }
+    } catch (error) {
+      throw new Error(error)
+    }}
    */
+
   //loga com conta da google
   async function signInWithGoogle() {
     try {
-      const CLIENT_ID =
-        '947512581914-2sqd54jm2lk5u2sbghbi05s1v0edmgds.apps.googleusercontent.com' //id grejaninflorencio
-
-      //  '686914996065-eg43f54mufblo4rdr0qt40s43db8ap7n.apps.googleusercontent.com'
-      const REDIRECT_URI = 'https://auth.expo.io/@grejaninflorencio/gofinances'
       const RESPONSE_TYPE = 'token'
       const SCOPE = encodeURI('profile email') //usa-se o encodeURI para que o espaço não quebre a busca
-
       const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
 
       const { type, params } = (await AuthSession.startAsync({
@@ -60,124 +102,81 @@ function AuthProvider({ children }: AuthProviderProps) {
         const userInfo = await response.json()
         console.log(userInfo)
 
-        //se deu certo, salva os dados do usuário
-        setUser({
+        const userLogged = {
+          //se deu certo, salva os dados do usuário
           id: userInfo.id,
           email: userInfo.email,
           name: userInfo.given_name,
           photo: userInfo.picture,
-        })
+        }
+        //se deu certo, salva os dados do usuário
+        setUser(userLogged)
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged))
       }
-
-      //console.log('deu certo')
-
       //  AuthSession.startAsync({ authUrl }) //endpoint de autenticação da google
     } catch (error) {
       throw new Error(error)
     }
   }
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        signInWithGoogle,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
-}
+  //loga com conta da apple
+  async function signInWithApple() {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      })
+      console.log(credential)
 
-function useAuth() {
-  const context = useContext(AuthContext)
-  return context
-}
+      if (credential) {
+        const name = credential.fullName!.givenName!
+        const photo = `https://ui-avatars.com/api/?name=${name}&length=1`
 
-export { AuthProvider, useAuth }
+        const userLogged = {
+          id: String(credential.user),
+          email: credential.email!, //a exclamação garante que sempre vai buscar um dado
+          name,
+          photo,
+        }
 
-/*
-import React, { createContext, ReactNode, useContext, useState } from 'react'
-
-import * as AuthSession from 'expo-auth-session'
-import * as WebBrowser from 'expo-web-browser'
-import * as Google from 'expo-auth-session/providers/google'
-
-import { UserInfo } from '../screens/Dashboard/styles'
-
-import { LogBox } from 'react-native'
-
-//web: 313172291784-htrkhibqvv0d6n69abejrpi6q0alrpvf.apps.googleusercontent.com
-//ios: 313172291784-8p1i8cee4o3a2r5bsd0agl2450hea003.apps.googleusercontent.com
-//android: 313172291784-ha7ns55u1cgriq737p54emel0ddv6bfp.apps.googleusercontent.com
-
-interface AuthProviderProps {
-  children: ReactNode
-}
-
-interface User {
-  id: string
-  name: string
-  email: string
-  photo?: string
-}
-
-interface IAuthContextData {
-  user: User
-  signInWithGoogle(): Promise<void>
-}
-
-interface AuthorizationResponse {
-  params: {
-    access_token: string
-  }
-  type: string
-}
-
-const AuthContext = createContext({} as IAuthContextData)
-
-WebBrowser.maybeCompleteAuthSession()
-
-//
-function AuthProvider({ children }: AuthProviderProps) {
-  const [acessToken, setAcessToken] = React.useState(null)
-  const [user, setUser] = React.useState(null)
-  const [request, response, promtAsunc] = Google.useIdTokenAuthRequest({
-    clientId:
-      '313172291784-htrkhibqvv0d6n69abejrpi6q0alrpvf.apps.googleusercontent.com',
-    iosClientId:
-      '313122971784-8p1i8cee4o3a2r5bsd0agl2450hea003.apps.googleusercontent.com',
-    androidClientId:
-      '313172291784-ha7ns55u1cgriq737p54emel0ddv6bfp.apps.googleusercontent.com',
-  })
-  //const [user, setUser] = useState<User>({} as User)
-
-  //loga com conta da google
-  // async function signInWithGoogle() {
-  //try {
-  React.useEffect(() => {
-    if (response?.type === 'success') {
-      setAcessToken(response.authentication?.accessToken)
-      acessToken && fetchUserInfo()
+        //salva o estado
+        setUser(userLogged)
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged))
+      }
+    } catch (error) {
+      throw new Error(error)
     }
-  }, [response, acessToken])
-  // } catch (error) {
-  //  throw new Error(error)
-  // }
-
-  async function fetchUserInfo() {
-    let response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-      headers: { Authorization: `Bearer ${acessToken}` },
-    })
-    const useInfo = await response.json()
-    setUser(useInfo)
   }
+
+  //deslogar
+  async function signOut() {
+    setUser({} as User)
+    await AsyncStorage.removeItem(userStorageKey)
+  }
+
+  //carrega as informações do asynStorage
+  useEffect(() => {
+    async function loadUserStorageDate() {
+      const userStoraged = await AsyncStorage.getItem(userStorageKey)
+
+      if (userStoraged) {
+        const userLogged = JSON.parse(userStoraged) as User
+        setUser(userLogged)
+      }
+      setUserStorageloading(false)
+    }
+    loadUserStorageDate() //após atualizar volta p/ tela autenticada
+  }, [])
 
   return (
     <AuthContext.Provider
       value={{
         user,
         signInWithGoogle,
+        signInWithApple,
+        signOut,
       }}
     >
       {children}
@@ -191,5 +190,3 @@ function useAuth() {
 }
 
 export { AuthProvider, useAuth }
-
-*/
